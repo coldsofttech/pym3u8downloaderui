@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader.exe ./src/__init__.py
           cd dist
           ls
 
@@ -37,6 +37,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/pym3u8downloaderui
-          asset_name: M3U8Downloader
+          asset_path: ./dist/M3U8Downloader.exe
+          asset_name: M3U8Downloader.exe
           asset_content_type: application/octet-stream
