@@ -72,7 +72,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -81,8 +81,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb
-          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb
+          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb
+          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb
           asset_content_type: application/octet-stream
 
       - name: Publish Release
@@ -96,7 +96,7 @@ jobs:
 
   release_rhel:
     permissions: write-all
-    runs-on: rhel-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
