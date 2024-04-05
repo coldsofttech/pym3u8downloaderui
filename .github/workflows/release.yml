@@ -27,8 +27,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          echo ${{ github.event.release.tag_name }}
-          pyinstaller --onefile --windowed --name M3U8Downloader.exe ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader-${{ github.event.release.tag_name }}.exe ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -37,8 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader.exe
-          asset_name: M3U8Downloader.exe
+          asset_path: ./dist/M3U8Downloader-${{ github.event.release.tag_name }}.exe
+          asset_name: M3U8Downloader-${{ github.event.release.tag_name }}.exe
           asset_content_type: application/octet-stream
 
       - name: Publish Release
