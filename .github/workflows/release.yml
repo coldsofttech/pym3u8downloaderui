@@ -7,11 +7,15 @@ on:
       - '*'
 
 jobs:
-  release:
+  release_windows:
     permissions: write-all
     runs-on: windows-latest
 
     steps:
+      - name: Set Installer Name
+        run: |
+          $package_name = "M3U8Downloader.${{ github.event.release.tag_name }}-Windows.exe"
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -27,7 +31,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader-${{ github.event.release.tag_name }}.exe ./src/__init__.py
+          pyinstaller --onefile --windowed --name $package_name ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -36,8 +40,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader-${{ github.event.release.tag_name }}.exe
-          asset_name: M3U8Downloader-${{ github.event.release.tag_name }}.exe
+          asset_path: ./dist/$package_name
+          asset_name: $package_name
           asset_content_type: application/octet-stream
 
       - name: Publish Release
