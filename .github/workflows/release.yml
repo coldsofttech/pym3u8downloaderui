@@ -45,12 +45,12 @@ jobs:
       - name: Publish Release
         if: ${{ steps.upload-release-asset.outcome == 'success' }}
         run: |
-          echo "token $env:GITHUB_TOKEN"
+          echo "Bearer $GITHUB_TOKEN"
           $json = @{
               draft = $false
           } | ConvertTo-Json
           $header = @{
-              Authorization = "token $env:GITHUB_TOKEN"
+              Authorization = "Bearer $GITHUB_TOKEN"
               Accept = "application/vnd.github.v3+json"
           }
           Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" -Method Patch -ContentType "application/json" -Headers $header -Body $json
