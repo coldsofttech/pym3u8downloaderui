@@ -27,9 +27,9 @@ jobs:
 
       - name: Build Installer
         run: |
+          echo ${{ github.tag_name }}
+          echo ${{ github }}
           pyinstaller --onefile --windowed --name M3U8Downloader.exe ./src/__init__.py
-          cd dist
-          ls
 
       - name: Upload Installer
         id: upload-release-asset
