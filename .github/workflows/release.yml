@@ -51,3 +51,87 @@ jobs:
               Accept = "application/vnd.github.v3+json"
           }
           Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" -Method Patch -ContentType "application/json" -Headers $header -Body $json
+
+  release_ubuntu:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Installer
+        run: |
+          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb ./src/__init__.py
+
+      - name: Upload Installer
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb
+          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-ubuntu.deb
+          asset_content_type: application/octet-stream
+
+      - name: Publish Release
+        if: ${{ steps.upload-release-asset.outcome == 'success' }}
+        run: |
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"draft": false}' \
+            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
+
+  release_rhel:
+    permissions: write-all
+    runs-on: rhel-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Installer
+        run: |
+          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm ./src/__init__.py
+
+      - name: Upload Installer
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm
+          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm
+          asset_content_type: application/octet-stream
+
+      - name: Publish Release
+        if: ${{ steps.upload-release-asset.outcome == 'success' }}
+        run: |
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"draft": false}' \
+            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
