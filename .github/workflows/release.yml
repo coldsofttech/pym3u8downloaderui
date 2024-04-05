@@ -45,6 +45,7 @@ jobs:
       - name: Publish Release
         if: ${{ steps.upload-release-asset.outcome == 'success' }}
         run: |
+          echo "Bearer $env:GITHUB_TOKEN"
           $json = @{
               draft = $false
           } | ConvertTo-Json
