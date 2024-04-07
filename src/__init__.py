@@ -63,6 +63,7 @@ class Constants:
     """This class holds all the constant values used in the application"""
 
     APP_TITLE = 'M3U8 Downloader'  # Title of the application
+    APP_VERSION = '0.1.0'  # Version of the application
     APP_WINDOW_WIDTH = 450  # Width of the application window
     APP_WINDOW_HEIGHT = 250  # Height of the application window
     APP_PALETTE_BACKGROUND = '#FFFFFF'  # Background color of the application
@@ -388,7 +389,7 @@ class AboutUI:
         """Set default values for various attributes."""
         self.header = 'About this app'
         self.app_name = 'M3U8 Downloader'
-        self.app_version = '0.1.0'
+        self.app_version = Constants.APP_VERSION
         self.copyrights = '© 2024 coldsofttech'
         self.license_type = 'MIT License'
         self.license_link = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/main/LICENSE'

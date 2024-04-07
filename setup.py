@@ -1,8 +1,10 @@
 from setuptools import setup
 
+from src import Constants
+
 setup(
     name='pym3u8downloaderui',
-    version='0.1.0',
+    version=Constants.APP_VERSION,
     package_dir={'': 'src'},
     url='https://github.com/coldsofttech/pym3u8downloaderui',
     license='MIT',
