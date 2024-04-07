@@ -73,10 +73,15 @@ class Constants:
     APP_LABEL_FONT_STYLE = 'bold'  # Font style for labels
     APP_ROW_MIN_SIZE = 10  # Minimum size for rows
     APP_PADDING = 10  # Padding for elements
+    APP_ICON_IMAGE_FILE_NAME = 'icon.png'  # File name of the icon image
+    APP_ICON_IMAGE_FILE_PATH = (
+        f'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/'
+        f'feature/src/Resources/Images/{APP_ICON_IMAGE_FILE_NAME}'
+    )  # Full URL of the icon image file
     APP_ICON_FILE_NAME = 'icon.ico'  # File name of the icon
     APP_ICON_FILE_PATH = (
         f'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/'
-        f'feature/src/resources/images/{APP_ICON_FILE_NAME}'
+        f'feature/src/Resources/Images/{APP_ICON_FILE_NAME}'
     )  # Full URL of the icon file
 
     MENU_FILE_TITLE = 'File'  # Title of the file menu
@@ -415,25 +420,42 @@ class AboutUI:
 
         self.window.rowconfigure(2, minsize=Constants.APP_ROW_MIN_SIZE)
 
+        self._show_icon()
+
+        self.window.rowconfigure(4, minsize=Constants.APP_ROW_MIN_SIZE)
+
         self.app_name_label = ttk.Label(
             self.window, text=f'{self.app_name} {self.app_version}', font=self.font_label_style,
             style='NoBackground.TLabel'
         )
-        self.app_name_label.grid(row=3, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
+        self.app_name_label.grid(row=5, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
 
         self.copyright_label = ttk.Label(
             self.window, text=self.copyrights, font=self.font_label_style, style='NoBackground.TLabel'
         )
-        self.copyright_label.grid(row=4, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
+        self.copyright_label.grid(row=6, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
 
-        self.window.rowconfigure(5, minsize=Constants.APP_ROW_MIN_SIZE)
+        self.window.rowconfigure(7, minsize=Constants.APP_ROW_MIN_SIZE)
 
         self.license_label = ttk.Label(
             self.window, text=self.license_type, foreground='blue', cursor='hand2', font=self.font_label_style,
             style='NoBackground.TLabel'
         )
-        self.license_label.grid(row=6, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
+        self.license_label.grid(row=8, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
         self.license_label.bind('<Button-1>', self._open_license)
+
+    def _show_icon(self) -> None:
+        """Show icon for the application."""
+        try:
+            response = requests.get(Constants.APP_ICON_IMAGE_FILE_PATH)
+            if response.status_code == 200:
+                image_data = response.content
+                image = tk.PhotoImage(data=image_data)
+                self.icon_label = ttk.Label(self.window, image=image)
+                self.icon_label.grid(row=3, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
+        except requests.RequestException as e:
+            print(str(e))
+            pass
 
     def _open_license(self, event) -> None:
         """
