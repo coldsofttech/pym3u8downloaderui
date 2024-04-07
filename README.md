@@ -27,21 +27,25 @@ Refer below for comprehensive instructions on how to use the application and com
 - For detailed user guidance, navigate to **Help > Help** within the application (this document).
 - Find additional information, including licensing details, under **Help > About**.
 
-1. Launch **M3U8 Downloader** UI by either right-clicking and selecting 'Open' or double-clicking the executable.
+**Step 1:** Launch **M3U8 Downloader** UI by either right-clicking and selecting 'Open' or double-clicking the executable.
 
 ![img.png](doc_images/doc_image_executable.png)
-2. Enter the URL of the .m3u8 playlist file you wish to download into the **Input URL (.m3u8)** field.
-3. Specify the destination folder for the downloaded file by clicking the **...** button. 
+
+**Step 2:** Enter the URL of the .m3u8 playlist file you wish to download into the **Input URL (.m3u8)** field.
+**Step 3:** Specify the destination folder for the downloaded file by clicking the **...** button. 
 
 ![img.png](doc_images/doc_image_app_window.png)
-4. Once both the input URL and output file are specified, click the **Download** button.
-5. Track the download progress within the application.
+
+**Step 4:** Once both the input URL and output file are specified, click the **Download** button.
+**Step 5:** Track the download progress within the application.
 
 ![img.png](doc_images/doc_image_download_progress.png)
-6. Upon successful completion of the download, a confirmation message will be displayed.
+
+**Step 6:** Upon successful completion of the download, a confirmation message will be displayed.
 
 ![img.png](doc_images/doc_image_download_complete.png)
-7. To initiate a new download and reset the controls, go to **File > New**. This action resets the controls and allows you to input a new URL and select a new output file.
+
+**Step 8:** To initiate a new download and reset the controls, go to **File > New**. This action resets the controls and allows you to input a new URL and select a new output file.
 
 ## General Issues & Resolutions
 ### Invalid Input URL
