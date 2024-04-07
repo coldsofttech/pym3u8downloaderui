@@ -75,7 +75,7 @@ class Constants:
     APP_PADDING = 10  # Padding for elements
     APP_ICON_FILE_NAME = 'icon.ico'  # File name of the icon
     APP_ICON_FILE_PATH = (
-        f'https://raw.githubusercontent.com/coldsofttech/py3mu8downloaderui/'
+        f'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/'
         f'feature/src/resources/images/{APP_ICON_FILE_NAME}'
     )  # Full URL of the icon file
 
