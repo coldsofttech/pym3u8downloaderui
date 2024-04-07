@@ -16,6 +16,7 @@ setup(
         ]
     },
     install_requires=[
+        'requests',
         'pym3u8downloader@ git+https://github.com/coldsofttech/pym3u8downloader.git'
     ]
 )

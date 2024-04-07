@@ -28,8 +28,6 @@ import tkinter as tk
 import webbrowser
 from tkinter import messagebox, ttk, filedialog
 
-import requests
-
 
 class StdoutRedirector:
     """Class for redirecting standard output to a Tkinter text variable."""
@@ -145,6 +143,8 @@ class M3U8DownloaderUI:
 
     def _set_icon(self) -> None:
         """Set icon for the application window."""
+        import requests
+
         if os.path.exists(Constants.APP_ICON_FILE_NAME):
             self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
         else:
@@ -447,6 +447,8 @@ class AboutUI:
 
     def _show_icon(self) -> None:
         """Show icon for the application."""
+        import requests
+
         try:
             response = requests.get(Constants.APP_ICON_IMAGE_FILE_PATH)
             if response.status_code == 200:
