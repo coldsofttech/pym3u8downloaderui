@@ -76,12 +76,12 @@ class Constants:
     APP_ICON_IMAGE_FILE_NAME = 'icon.png'  # File name of the icon image
     APP_ICON_IMAGE_FILE_PATH = (
         f'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/'
-        f'feature/src/Resources/Images/{APP_ICON_IMAGE_FILE_NAME}'
+        f'main/src/Resources/Images/{APP_ICON_IMAGE_FILE_NAME}'
     )  # Full URL of the icon image file
     APP_ICON_FILE_NAME = 'icon.ico'  # File name of the icon
     APP_ICON_FILE_PATH = (
         f'https://raw.githubusercontent.com/coldsofttech/pym3u8downloaderui/'
-        f'feature/src/Resources/Images/{APP_ICON_FILE_NAME}'
+        f'main/src/Resources/Images/{APP_ICON_FILE_NAME}'
     )  # Full URL of the icon file
 
     MENU_FILE_TITLE = 'File'  # Title of the file menu
