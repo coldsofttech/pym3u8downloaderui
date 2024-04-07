@@ -28,6 +28,8 @@ import tkinter as tk
 import webbrowser
 from tkinter import messagebox, ttk, filedialog
 
+import requests
+
 
 class StdoutRedirector:
     """Class for redirecting standard output to a Tkinter text variable."""
@@ -71,6 +73,11 @@ class Constants:
     APP_LABEL_FONT_STYLE = 'bold'  # Font style for labels
     APP_ROW_MIN_SIZE = 10  # Minimum size for rows
     APP_PADDING = 10  # Padding for elements
+    APP_ICON_FILE_NAME = 'icon.ico'  # File name of the icon
+    APP_ICON_FILE_PATH = (
+        f'https://raw.githubusercontent.com/coldsofttech/py3mu8downloaderui/'
+        f'feature/src/resources/images/{APP_ICON_FILE_NAME}'
+    )  # Full URL of the icon file
 
     MENU_FILE_TITLE = 'File'  # Title of the file menu
     MENU_FILE_NEW_TITLE = 'New'  # Tile of the 'New' option in the file menu
@@ -121,6 +128,7 @@ class M3U8DownloaderUI:
         self.master.title(Constants.APP_TITLE)
         self.master.geometry(f'{Constants.APP_WINDOW_WIDTH}x{Constants.APP_WINDOW_HEIGHT}')
         self.master.resizable(False, False)
+        self._set_icon()
 
         self._set_overrides()
         self._set_defaults()
@@ -128,6 +136,20 @@ class M3U8DownloaderUI:
         self._set_fonts()
         self._set_menus()
         self._set_controls()
+
+    def _set_icon(self) -> None:
+        """Set icon for the application window."""
+        if os.path.exists(Constants.APP_ICON_FILE_NAME):
+            self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
+        else:
+            try:
+                response = requests.get(Constants.APP_ICON_FILE_PATH)
+                if response.status_code == 200:
+                    with open(Constants.APP_ICON_FILE_NAME, 'wb') as icon_file:
+                        icon_file.write(response.content)
+                    self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
+            except requests.RequestException:
+                pass
 
     def _set_overrides(self) -> None:
         """Set overrides for the application window."""

@@ -3,7 +3,6 @@ from setuptools import setup
 setup(
     name='pym3u8downloaderui',
     version='0.1.0',
-    packages=[''],
     package_dir={'': 'src'},
     url='https://github.com/coldsofttech/pym3u8downloaderui',
     license='MIT',
@@ -15,6 +14,7 @@ setup(
         ]
     },
     install_requires=[
+        'requests',
         'pym3u8downloader@ git+https://github.com/coldsofttech/pym3u8downloader.git'
     ]
 )

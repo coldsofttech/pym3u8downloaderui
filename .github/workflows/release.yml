@@ -7,32 +7,7 @@ on:
       - '*'
 
 jobs:
-  build_and_test_workflow:
-    runs-on: ubuntu-latest
-    outputs:
-      workflow_status: ${{ steps.workflow_status.outputs.status }}
-
-    steps:
-      - name: Wait for Build and Test
-        id: workflow_status
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const { data: runs } = await github.actions.listWorkflowRuns({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_file: 'pipeline.yml',
-              status: 'success',
-            })
-            if (runs.total_count > 0) {
-              return 'success';
-            } else {
-              return 'failure';
-            }
-
   release_windows:
-    needs: build_and_test_workflow
-    if: needs.build_and_test_workflow.outputs.workflow_status == 'success'
     permissions: write-all
     runs-on: windows-latest
 
@@ -52,7 +27,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-Windows.exe ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader-${{ github.event.release.tag_name }}-Windows.exe ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -61,8 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-Windows.exe
-          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-Windows.exe
+          asset_path: ./dist/M3U8Downloader-${{ github.event.release.tag_name }}-Windows.exe
+          asset_name: M3U8Downloader-${{ github.event.release.tag_name }}-Windows.exe
           asset_content_type: application/octet-stream
 
       - name: Publish Release
@@ -78,8 +53,6 @@ jobs:
           Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" -Method Patch -ContentType "application/json" -Headers $header -Body $json
 
   release_ubuntu:
-    needs: build_and_test_workflow
-    if: needs.build_and_test_workflow.outputs.workflow_status == 'success'
     permissions: write-all
     runs-on: ubuntu-latest
 
@@ -99,7 +72,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader-${{ github.event.release.tag_name }}-debian.deb ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -108,8 +81,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb
-          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-debian.deb
+          asset_path: ./dist/M3U8Downloader-${{ github.event.release.tag_name }}-debian.deb
+          asset_name: M3U8Downloader-${{ github.event.release.tag_name }}-debian.deb
           asset_content_type: application/octet-stream
 
       - name: Publish Release
@@ -122,8 +95,6 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
 
   release_rhel:
-    needs: build_and_test_workflow
-    if: needs.build_and_test_workflow.outputs.workflow_status == 'success'
     permissions: write-all
     runs-on: ubuntu-latest
 
@@ -143,7 +114,7 @@ jobs:
 
       - name: Build Installer
         run: |
-          pyinstaller --onefile --windowed --name M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm ./src/__init__.py
+          pyinstaller --onefile --windowed --name M3U8Downloader-${{ github.event.release.tag_name }}-linux.rpm ./src/__init__.py
 
       - name: Upload Installer
         id: upload-release-asset
@@ -152,8 +123,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm
-          asset_name: M3U8Downloader.${{ github.event.release.tag_name }}-linux.rpm
+          asset_path: ./dist/M3U8Downloader-${{ github.event.release.tag_name }}-linux.rpm
+          asset_name: M3U8Downloader-${{ github.event.release.tag_name }}-linux.rpm
           asset_content_type: application/octet-stream
 
       - name: Publish Release
