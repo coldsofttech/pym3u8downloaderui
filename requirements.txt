@@ -1,0 +1,4 @@
+pym3u8downloader@ git+https://github.com/coldsofttech/pym3u8downloader.git
+pytest~=7.4.0
+setuptools~=69.2.0
+requests~=2.31.0
