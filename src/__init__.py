@@ -112,7 +112,7 @@ class Constants:
 
     ABOUT_TITLE = 'About'  # Title for about window
     ABOUT_WINDOW_WIDTH = 300  # Width of the about window
-    ABOUT_WINDOW_HEIGHT = 200  # Height of the about window
+    ABOUT_WINDOW_HEIGHT = 250  # Height of the about window
 
     CONFIG_FILE = 'config.json'  # File name for configuration file
 
@@ -450,11 +450,13 @@ class AboutUI:
             response = requests.get(Constants.APP_ICON_IMAGE_FILE_PATH)
             if response.status_code == 200:
                 image_data = response.content
-                image = tk.PhotoImage(data=image_data)
-                self.icon_label = ttk.Label(self.window, image=image)
+                self.image = tk.PhotoImage(data=image_data)
+                self.image = self.image.subsample(int(self.image.width() / 64), int(self.image.height() / 64))
+
+                self.icon_label = ttk.Label(self.window, image=self.image)
+                self.icon_label.image = self.image
                 self.icon_label.grid(row=3, column=0, sticky=tk.W, padx=Constants.APP_PADDING)
-        except requests.RequestException as e:
-            print(str(e))
+        except requests.RequestException:
             pass
 
     def _open_license(self, event) -> None:
