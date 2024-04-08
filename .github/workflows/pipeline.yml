@@ -36,7 +36,9 @@ jobs:
           path: flake8-report.json
 
   build_and_test:
+    name: Build and Test
     runs-on: windows-latest
+    needs: lint
 
     steps:
       - name: Checkout Repository
