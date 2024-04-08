@@ -61,7 +61,7 @@ class Constants:
     """This class holds all the constant values used in the application"""
 
     APP_TITLE = 'M3U8 Downloader'  # Title of the application
-    APP_VERSION = '0.1.0'  # Version of the application
+    APP_VERSION = '0.1.1'  # Version of the application
     APP_WINDOW_WIDTH = 450  # Width of the application window
     APP_WINDOW_HEIGHT = 250  # Height of the application window
     APP_PALETTE_BACKGROUND = '#FFFFFF'  # Background color of the application
@@ -475,7 +475,7 @@ class AboutUI:
 
 def main():
     root = tk.Tk()
-    app = M3U8DownloaderUI(root)
+    M3U8DownloaderUI(root)
     root.mainloop()
 
 
