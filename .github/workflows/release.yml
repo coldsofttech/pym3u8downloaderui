@@ -8,15 +8,16 @@ on:
 
 jobs:
   release_windows:
+    name: Release for Windows
     permissions: write-all
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -53,15 +54,16 @@ jobs:
           Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}" -Method Patch -ContentType "application/json" -Headers $header -Body $json
 
   release_ubuntu:
+    name: Release for Ubuntu
     permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -95,15 +97,16 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
 
   release_rhel:
+    name: Release for Linux
     permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
