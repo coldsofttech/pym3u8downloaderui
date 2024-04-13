@@ -40,7 +40,7 @@ class Constants:
     """This class holds all the constant values used in the application"""
 
     APP_TITLE = 'M3U8 Downloader'  # Title of the application
-    APP_VERSION = 'feat-0.1.2'  # Version of the application
+    APP_VERSION = '0.1.2'  # Version of the application
     APP_PACKAGE_NAME = 'pym3u8downloaderui'  # Package name of the application
     APP_PACKAGE_DESCRIPTION = """
     M3U8 Downloader UI is a Python-based graphical user interface (GUI) application designed
