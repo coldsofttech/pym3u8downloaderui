@@ -1,25 +1,3 @@
-# MIT License
-#
-# Copyright (c) 2024 coldsofttech
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import json
 import os
 import sys
@@ -61,7 +39,14 @@ class Constants:
     """This class holds all the constant values used in the application"""
 
     APP_TITLE = 'M3U8 Downloader'  # Title of the application
-    APP_VERSION = '0.1.1'  # Version of the application
+    APP_VERSION = '0.1.2'  # Version of the application
+    APP_PACKAGE_NAME = 'pym3u8downloaderui'  # Package name of the application
+    APP_PACKAGE_DESCRIPTION = """
+    M3U8 Downloader UI is a Python-based graphical user interface (GUI) application designed 
+    to simplify the process of downloading and concatenating video files using the 
+    pym3u8downloader package. This application streamlines the task of downloading and 
+    merging video files from M3U8 playlists.
+    """  # Description of the application
     APP_WINDOW_WIDTH = 450  # Width of the application window
     APP_WINDOW_HEIGHT = 250  # Height of the application window
     APP_PALETTE_BACKGROUND = '#FFFFFF'  # Background color of the application
