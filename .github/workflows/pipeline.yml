@@ -88,10 +88,22 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install Dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install -y python3-tk
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel
+
+      - name: Start Virtual Display (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install -y xvfb  # Install Xvfb
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          export DISPLAY=:99
 
       - name: Build Package
         run: |
