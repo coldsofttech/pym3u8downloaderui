@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 import unittest
 from unittest.mock import patch
@@ -11,6 +12,10 @@ class TestAboutUI(unittest.TestCase):
     """Unit test cases for AboutUI"""
 
     def setUp(self):
+        if os.environ.get('DISPLAY', '') == '':
+            print('No display found. Using: 0.0')
+            os.environ.__setitem__('DISPLAY', ':0.0')
+
         self.root = tk.Tk()
 
     def tearDown(self):

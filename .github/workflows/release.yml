@@ -68,7 +68,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"draft": false}' \
             "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
-  
+
 
 #  release_windows:
 #    name: Release for Windows

@@ -12,6 +12,10 @@ class TestDownloadThread(unittest.TestCase):
     """Unit test cases for DownloadThread class."""
 
     def setUp(self):
+        if os.environ.get('DISPLAY', '') == '':
+            print('No display found. Using: 0.0')
+            os.environ.__setitem__('DISPLAY', ':0.0')
+
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'
         self.root = tk.Tk()
