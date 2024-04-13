@@ -4,15 +4,16 @@ from unittest.mock import patch
 
 import pytest
 
-from src import AboutUI, display_settings
+from src import AboutUI, get_root_window
 
 
 class TestAboutUI(unittest.TestCase):
     """Unit test cases for AboutUI"""
 
     def setUp(self):
-        display_settings()
-        self.root = tk.Tk()
+        # display_settings()
+        # self.root = tk.Tk()
+        self.root = get_root_window()
 
     def tearDown(self):
         try:

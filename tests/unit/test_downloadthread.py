@@ -5,17 +5,18 @@ import unittest
 
 import pytest
 
-from src import M3U8DownloaderUI, DownloadThread, display_settings
+from src import M3U8DownloaderUI, DownloadThread, get_root_window
 
 
 class TestDownloadThread(unittest.TestCase):
     """Unit test cases for DownloadThread class."""
 
     def setUp(self):
-        display_settings()
+        # display_settings()
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'
-        self.root = tk.Tk()
+        # self.root = tk.Tk()
+        self.root = get_root_window()
         self.source = M3U8DownloaderUI(self.root)
         self.config_file = 'config.json'
 

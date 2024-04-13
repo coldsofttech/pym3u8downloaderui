@@ -4,15 +4,16 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from src import M3U8DownloaderUI, display_settings
+from src import M3U8DownloaderUI, get_root_window
 
 
 class TestM3U8DownloaderUI(unittest.TestCase):
     """Unit test cases for M3U8DownloaderUI"""
 
     def setUp(self):
-        display_settings()
-        self.root = tk.Tk()
+        # display_settings()
+        # self.root = tk.Tk()
+        self.root = get_root_window()
         self.source = M3U8DownloaderUI(self.root)
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'

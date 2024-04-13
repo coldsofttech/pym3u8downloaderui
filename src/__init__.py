@@ -459,6 +459,12 @@ class AboutUI:
         webbrowser.open(self.license_link)
 
 
+def get_root_window() -> tk.Tk:
+    if platform.system().lower() == 'linux':
+        setting = os.environ.__getitem__('DISPLAY')
+        return tk.Tk(screenName=setting)
+
+
 def display_settings():
     if platform.system().lower() == 'linux':
         if os.environ.get('DISPLAY', '') == '':
@@ -467,8 +473,8 @@ def display_settings():
 
 
 def main():
-    display_settings()
-    root = tk.Tk()
+    # root = tk.Tk()
+    root = get_root_window()
     M3U8DownloaderUI(root)
     root.mainloop()
 
