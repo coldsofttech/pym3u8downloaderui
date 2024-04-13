@@ -15,8 +15,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  build_windows:
-    name: Build (Windows)
+  release_windows:
+    name: Release Windows
     timeout-minutes: 20
     strategy:
       fail-fast: true
@@ -37,138 +37,13 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build
-        run: |
           pip install setuptools wheel
-          python setup.py bdist
+
+      - name: Build Package
+        run: |
+          python setup.py sdist bdist bdist_wheel
           cd dist
           ls
-
-      - name: Build Installer
-        run: |
-          pyinstaller --onefile --windowed --name ${{ env.WINDOWS_PACKAGE }} ./src/__init__.py
-
-      - name: Upload Installer
-        id: upload-release-asset-windows
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: ./dist/${{ env.WINDOWS_PACKAGE }}
-          asset_name: ${{ env.WINDOWS_PACKAGE }}
-          asset_content_type: application/octet-stream
-
-  build_linux_rpm:
-    name: Build (Linux RPM)
-    timeout-minutes: 20
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: [ '3.10' ]
-    runs-on: ${{ matrix.os }}
-    permissions: write-all
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build Installer
-        run: |
-          pyinstaller --onefile --windowed --name ${{ env.LINUX_RPM_PACKAGE }} ./src/__init__.py
-
-      - name: Upload Installer
-        id: upload-release-asset-linux-rpm
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: ./dist/${{ env.LINUX_RPM_PACKAGE }}
-          asset_name: ${{ env.LINUX_RPM_PACKAGE }}
-          asset_content_type: application/octet-stream
-
-  build_linux_deb:
-    name: Build (Linux Debian)
-    timeout-minutes: 20
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: [ '3.10' ]
-    runs-on: ${{ matrix.os }}
-    permissions: write-all
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build Installer
-        run: |
-          pyinstaller --onefile --windowed --name ${{ env.LINUX_DEB_PACKAGE }} ./src/__init__.py
-
-      - name: Upload Installer
-        id: upload-release-asset-linux-deb
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: ./dist/${{ env.LINUX_DEB_PACKAGE }}
-          asset_name: ${{ env.LINUX_DEB_PACKAGE }}
-          asset_content_type: application/octet-stream
-
-  build_macos:
-    name: Build (MacOS)
-    timeout-minutes: 20
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ macos-latest ]
-        python-version: [ '3.10' ]
-    runs-on: ${{ matrix.os }}
-    permissions: write-all
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build Installer
-        run: |
-          pyinstaller --onefile --windowed --name ${{ env.MACOS_PACKAGE }} ./src/__init__.py
-
-      - name: Upload Installer
-        id: upload-release-asset-macos
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: ./dist/${{ env.MACOS_PACKAGE }}
-          asset_name: ${{ env.MACOS_PACKAGE }}
-          asset_content_type: application/octet-stream
 
   publish:
     name: Publish
@@ -180,18 +55,8 @@ jobs:
         python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     permissions: write-all
-    needs: [ build_windows, build_linux_rpm, build_linux_deb, build_macos ]
+    needs: [ release_windows ]
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
-
       - name: Publish Release
         run: |
           curl -X PATCH \
@@ -199,17 +64,3 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"draft": false}' \
             "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}"
-
-      - name: Upload to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          assets=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets" | jq -r '.[] | select(.name | test("^m3u8downloader-.*$")) | .browser_download_url')
-          for asset in $assets; do
-            curl -sLJO -H "Authorization: Bearer $GITHUB_TOKEN" "$asset"
-          done
-          ls -1 m3u8downloader-* > assets.txt
-          while IFS= read -r asset; do
-            twine upload --repository pypi "$asset"
-          done < assets.txt
