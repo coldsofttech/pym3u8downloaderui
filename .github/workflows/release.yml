@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ windows-latest ]
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
         python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     permissions: write-all
@@ -45,13 +45,23 @@ jobs:
           $path_separator = "\\"
           $latestFile = Get-ChildItem -Path "dist\\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
           Write-Host "Latest file: $latestFile"
-          Write-Output "PACKAGE_NAME=dist$path_separator$($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "PACKAGE_PATH=dist$path_separator$($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "PACKAGE_NAME=($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Get Package Name (Ubuntu and macOS)
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: |
+          path_separator="/"
+          latestFile=$(ls -t dist/ | head -n 1)
+          echo "Latest file: $latestFile"
+          echo "PACKAGE_PATH=dist$path_separator$latestFile" >> $GITHUB_ENV
+          echo "PACKAGE_NAME=$latestFile" >> $GITHUB_ENV
 
       - name: Upload Package
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.UPLOAD_URL }}
-          asset_path: ./dist/${{ env.PACKAGE_NAME }}
+          asset_path: ${{ env.PACKAGE_PATH }}
           asset_name: ${{ env.PACKAGE_NAME }}
           asset_content_type: application/octet-stream
 
