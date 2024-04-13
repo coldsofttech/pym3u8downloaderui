@@ -52,7 +52,7 @@ class Constants:
     APP_WINDOW_HEIGHT = 250  # Height of the application window
     APP_PALETTE_BACKGROUND = '#FFFFFF'  # Background color of the application
     APP_PALETTE_FOREGROUND = '#000000'  # Foreground color of the application
-    APP_THEME = 'xpnative'  # Theme of the application
+    APP_THEME = 'xpnative' if platform.system().lower() == 'windows' else 'clam'  # Theme of the application
     APP_LABEL_FONT_TYPE = 'Segoe UI'  # Font type for labels
     APP_LABEL_FONT_SIZE = 8  # Font size for labels
     APP_LABEL_FONT_STYLE = 'bold'  # Font style for labels
