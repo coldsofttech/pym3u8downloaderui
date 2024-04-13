@@ -143,7 +143,8 @@ class M3U8DownloaderUI:
                         self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
                 except requests.RequestException:
                     pass
-        elif platform.system().lower() == 'linux':
+        # elif platform.system().lower() == 'linux':
+        else:
             if os.path.exists(Constants.APP_ICON_IMAGE_FILE_NAME):
                 icon = tk.PhotoImage(file=Constants.APP_ICON_IMAGE_FILE_NAME)
                 self.master.iconphoto(True, icon)

@@ -73,8 +73,14 @@ jobs:
           ps aux | grep xvfb
           xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
 
+      - name: Run Tests (MacOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          pip install --upgrade tkinter
+          pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
+
       - name: Run Tests (Windows)
-        if: matrix.os == 'windows-latest' || matrix.os == 'macos-latest'
+        if: matrix.os == 'windows-latest'
         run: |
           pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
 
