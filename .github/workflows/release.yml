@@ -47,7 +47,7 @@ jobs:
           upload_url: ${{ env.UPLOAD_URL }}
           asset_path: ./dist/${{ env.WINDOWS_PACKAGE }}
           asset_name: ${{ env.WINDOWS_PACKAGE }}
-          asset-content-type: application/octet-stream
+          asset_content_type: application/octet-stream
 
   publish:
     name: Publish
