@@ -81,7 +81,7 @@ jobs:
             brew install tcl-tk
             pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
           else
-            echo -e "\e[33mWARNING: Known issue with MacOS and Python 3.10, tkinter incompatibility. Skipping tests.\e[0m"
+            printf "\e[33mWARNING: Known issue with MacOS and Python 3.10, tkinter incompatibility. Skipping tests.\e[0m\n"
           fi
 
       - name: Run Tests (Windows)
