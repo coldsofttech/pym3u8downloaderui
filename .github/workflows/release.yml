@@ -39,6 +39,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller
 
+      - name: Build
+        run: |
+          pip install setuptools wheel
+          python setup.py bdist
+          ls
+
       - name: Build Installer
         run: |
           pyinstaller --onefile --windowed --name ${{ env.WINDOWS_PACKAGE }} ./src/__init__.py
