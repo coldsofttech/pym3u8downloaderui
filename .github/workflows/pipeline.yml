@@ -75,6 +75,7 @@ jobs:
         run: |
           sudo apt-get install -y xvfb  # Install Xvfb
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          sleep 5  # Adding a delay of 5 seconds to allow Xvfb to initialize
           export DISPLAY=:99
 
       - name: Run Tests
