@@ -65,21 +65,16 @@ jobs:
           pip install pytest
           pip install -r requirements.txt
 
-      - name: Install Dependencies (Ubuntu)
+      - name: Run Tests (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install -y python3-tk
           sudo apt-get install -y xvfb
-
-      - name: Start Virtual Display (Ubuntu)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          # Xvfb :99 -screen 0 1024x768x16 &
-          # export DISPLAY=:99
           ps aux | grep xvfb
-          xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' pytest tests
+          xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
 
-      - name: Run Tests
+      - name: Run Tests (Windows)
+        if: matrix.os == 'windows-latest' || matrix.os == 'macos-latest'
         run: |
           pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
 

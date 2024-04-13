@@ -3,16 +3,14 @@ import unittest
 
 import pytest
 
-from src import StdoutRedirector, get_root_window
+from src import StdoutRedirector
 
 
 class TestStdoutRedirector(unittest.TestCase):
     """Unit test cases for StdoutRedirector"""
 
     def setUp(self):
-        # display_settings()
-        # self.root = tk.Tk()
-        self.root = get_root_window()
+        self.root = tk.Tk()
         self.text_variable = tk.StringVar()
         self.stdout_redirector = StdoutRedirector(self.text_variable)
 
