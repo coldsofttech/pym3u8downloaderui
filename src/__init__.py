@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 import sys
 import threading
 import tkinter as tk
@@ -459,9 +460,11 @@ class AboutUI:
 
 
 def main():
-    if os.environ.get('DISPLAY', '') == '':
-        print('No display found. Using: 0.0')
-        os.environ.__setitem__('DISPLAY', ':0.0')
+    if platform.system().lower() == 'linux':
+        if platform.dist()[0].lower() == 'ubuntu':
+            if os.environ.get('DISPLAY', '') == '':
+                print('No display found. Using: 0.0')
+                os.environ.__setitem__('DISPLAY', ':0.0')
 
     root = tk.Tk()
     M3U8DownloaderUI(root)
