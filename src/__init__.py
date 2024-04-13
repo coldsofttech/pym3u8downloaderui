@@ -459,6 +459,10 @@ class AboutUI:
 
 
 def main():
+    if os.environ.get('DISPLAY', '') == '':
+        print('No display found. Using: 0.0')
+        os.environ.__setitem__('DISPLAY', ':0.0')
+        
     root = tk.Tk()
     M3U8DownloaderUI(root)
     root.mainloop()
