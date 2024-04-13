@@ -42,9 +42,9 @@ class Constants:
     APP_VERSION = '0.1.2'  # Version of the application
     APP_PACKAGE_NAME = 'pym3u8downloaderui'  # Package name of the application
     APP_PACKAGE_DESCRIPTION = """
-    M3U8 Downloader UI is a Python-based graphical user interface (GUI) application designed 
-    to simplify the process of downloading and concatenating video files using the 
-    pym3u8downloader package. This application streamlines the task of downloading and 
+    M3U8 Downloader UI is a Python-based graphical user interface (GUI) application designed
+    to simplify the process of downloading and concatenating video files using the
+    pym3u8downloader package. This application streamlines the task of downloading and
     merging video files from M3U8 playlists.
     """  # Description of the application
     APP_WINDOW_WIDTH = 450  # Width of the application window
