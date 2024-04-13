@@ -1,24 +1,17 @@
-import os
-import platform
 import tkinter as tk
 import unittest
 from unittest.mock import patch, MagicMock
 
 import pytest
 
-from src import M3U8DownloaderUI
+from src import M3U8DownloaderUI, display_settings
 
 
 class TestM3U8DownloaderUI(unittest.TestCase):
     """Unit test cases for M3U8DownloaderUI"""
 
     def setUp(self):
-        if platform.system().lower() == 'linux':
-            if platform.dist()[0].lower() == 'ubuntu':
-                if os.environ.get('DISPLAY', '') == '':
-                    print('No display found. Using: 0.0')
-                    os.environ.__setitem__('DISPLAY', ':0.0')
-
+        display_settings()
         self.root = tk.Tk()
         self.source = M3U8DownloaderUI(self.root)
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'

@@ -1,23 +1,16 @@
-import os
-import platform
 import tkinter as tk
 import unittest
 
 import pytest
 
-from src import StdoutRedirector
+from src import StdoutRedirector, display_settings
 
 
 class TestStdoutRedirector(unittest.TestCase):
     """Unit test cases for StdoutRedirector"""
 
     def setUp(self):
-        if platform.system().lower() == 'linux':
-            if platform.dist()[0].lower() == 'ubuntu':
-                if os.environ.get('DISPLAY', '') == '':
-                    print('No display found. Using: 0.0')
-                    os.environ.__setitem__('DISPLAY', ':0.0')
-
+        display_settings()
         self.root = tk.Tk()
         self.text_variable = tk.StringVar()
         self.stdout_redirector = StdoutRedirector(self.text_variable)

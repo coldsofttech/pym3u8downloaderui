@@ -1,24 +1,17 @@
-import os
-import platform
 import tkinter as tk
 import unittest
 from unittest.mock import patch
 
 import pytest
 
-from src import AboutUI
+from src import AboutUI, display_settings
 
 
 class TestAboutUI(unittest.TestCase):
     """Unit test cases for AboutUI"""
 
     def setUp(self):
-        if platform.system().lower() == 'linux':
-            if platform.dist()[0].lower() == 'ubuntu':
-                if os.environ.get('DISPLAY', '') == '':
-                    print('No display found. Using: 0.0')
-                    os.environ.__setitem__('DISPLAY', ':0.0')
-
+        display_settings()
         self.root = tk.Tk()
 
     def tearDown(self):

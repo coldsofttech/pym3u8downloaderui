@@ -1,24 +1,18 @@
 import json
 import os
-import platform
 import tkinter as tk
 import unittest
 
 import pytest
 
-from src import M3U8DownloaderUI, DownloadThread
+from src import M3U8DownloaderUI, DownloadThread, display_settings
 
 
 class TestDownloadThread(unittest.TestCase):
     """Unit test cases for DownloadThread class."""
 
     def setUp(self):
-        if platform.system().lower() == 'linux':
-            if platform.dist()[0].lower() == 'ubuntu':
-                if os.environ.get('DISPLAY', '') == '':
-                    print('No display found. Using: 0.0')
-                    os.environ.__setitem__('DISPLAY', ':0.0')
-
+        display_settings()
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'
         self.root = tk.Tk()
