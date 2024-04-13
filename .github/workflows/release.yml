@@ -192,4 +192,7 @@ jobs:
           for asset in $assets; do
             curl -sLJO -H "Authorization: Bearer $GITHUB_TOKEN" "$asset"
           done
-          ls -1 m3u8downloader-*
+          ls -1 m3u8downloader-* > assets.txt
+          while IFS= read -r asset; do
+            twine upload --repository pypi "$asset"
+          done < assets.txt
