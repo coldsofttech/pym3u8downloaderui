@@ -46,7 +46,7 @@ jobs:
           $latestFile = Get-ChildItem -Path "dist\\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
           Write-Host "Latest file: $latestFile"
           Write-Output "PACKAGE_PATH=dist$path_separator$($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
-          Write-Output "PACKAGE_NAME=($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "PACKAGE_NAME=$($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Get Package Name (Ubuntu and macOS)
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
