@@ -76,7 +76,7 @@ jobs:
       - name: Run Tests (MacOS)
         if: matrix.os == 'macos-latest'
         run: |
-          pip install --upgrade tkinter
+          brew install tcl-tk
           pytest tests -vv -rEPW -o pytest_collection_order=alphabetical --cache-clear --color=yes
 
       - name: Run Tests (Windows)
