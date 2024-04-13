@@ -74,8 +74,9 @@ jobs:
       - name: Start Virtual Display (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
+          Xvfb :99 -screen 0 1024x768x16 &
           export DISPLAY=:99
-          Xvfb :99 &
+          ps aux | grep Xvfb
 
       - name: Run Tests
         run: |
