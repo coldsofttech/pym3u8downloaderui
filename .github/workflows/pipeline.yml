@@ -77,7 +77,6 @@ jobs:
           Xvfb :99 -screen 0 1024x768x16 &
           export DISPLAY=:99
           ps aux | grep Xvfb
-          .\gui.sh --headless
 
       - name: Run Tests
         run: |
