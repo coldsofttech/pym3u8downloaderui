@@ -9,6 +9,8 @@ on:
 env:
   WINDOWS_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-windows.exe
   LINUX_RPM_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-linux.rpm
+  LINUX_DEB_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-debian.deb
+  MACOS_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-macos.pkg
   UPLOAD_URL: ${{ github.event.release.upload_url }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -87,6 +89,80 @@ jobs:
           asset_name: ${{ env.LINUX_RPM_PACKAGE }}
           asset_content_type: application/octet-stream
 
+  build_linux_deb:
+    name: Build (Linux Debian)
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.10' ]
+    runs-on: ${{ matrix.os }}
+    permissions: write-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Installer
+        run: |
+          pyinstaller --onefile --windowed --name ${{ env.LINUX_DEB_PACKAGE }} ./src/__init__.py
+
+      - name: Upload Installer
+        id: upload-release-asset-linux-deb
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ env.UPLOAD_URL }}
+          asset_path: ./dist/${{ env.LINUX_DEB_PACKAGE }}
+          asset_name: ${{ env.LINUX_DEB_PACKAGE }}
+          asset_content_type: application/octet-stream
+
+  build_macos:
+    name: Build (MacOS)
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ macos-latest ]
+        python-version: [ '3.10' ]
+    runs-on: ${{ matrix.os }}
+    permissions: write-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Installer
+        run: |
+          pyinstaller --onefile --windowed --name ${{ env.MACOS_PACKAGE }} ./src/__init__.py
+
+      - name: Upload Installer
+        id: upload-release-asset-macos
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ env.UPLOAD_URL }}
+          asset_path: ./dist/${{ env.MACOS_PACKAGE }}
+          asset_name: ${{ env.MACOS_PACKAGE }}
+          asset_content_type: application/octet-stream
+
   publish:
     name: Publish
     timeout-minutes: 20
@@ -97,7 +173,7 @@ jobs:
         python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     permissions: write-all
-    needs: [ build_windows, build_linux_rpm ]
+    needs: [ build_windows, build_linux_rpm, build_linux_deb, build_macos ]
     steps:
       - name: Publish Release
         run: |
