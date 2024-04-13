@@ -7,10 +7,6 @@ on:
       - '*'
 
 env:
-  WINDOWS_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-windows.exe
-  LINUX_RPM_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-linux.rpm
-  LINUX_DEB_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-debian.deb
-  MACOS_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-macos.pkg
   UPLOAD_URL: ${{ github.event.release.upload_url }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,6 +46,14 @@ jobs:
           $latestFile = Get-ChildItem -Path "dist\\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
           Write-Host "Latest file: $latestFile"
           Write-Output "PACKAGE_NAME=dist$path_separator$($latestFile.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Upload Package
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ env.UPLOAD_URL }}
+          asset_path: ./dist/${{ env.PACKAGE_NAME }}
+          asset_name: ${{ env.PACKAGE_NAME }}
+          asset_content_type: application/octet-stream
 
   publish:
     name: Publish
