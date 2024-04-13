@@ -7,7 +7,8 @@ on:
       - '*'
 
 env:
-  WINDOWS_PACKAGE: M3U8Downloader-${{ github.event.release.tag_name }}-Windows.exe
+  WINDOWS_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-windows.exe
+  LINUX_RPM_PACKAGE: m3u8downloader-${{ github.event.release.tag_name }}-linux.rpm
   UPLOAD_URL: ${{ github.event.release.upload_url }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,11 +43,48 @@ jobs:
 
       - name: Upload Installer
         id: upload-release-asset-windows
-        uses: actions/upload-release-asset@v1.1.3
+        uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.UPLOAD_URL }}
           asset_path: ./dist/${{ env.WINDOWS_PACKAGE }}
           asset_name: ${{ env.WINDOWS_PACKAGE }}
+          asset_content_type: application/octet-stream
+
+  build_linux_rpm:
+    name: Build (Linux RPM)
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.10' ]
+    runs-on: ${{ matrix.os }}
+    permissions: write-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Installer
+        run: |
+          pyinstaller --onefile --windowed --name ${{ env.LINUX_RPM_PACKAGE }} ./src/__init__.py
+
+      - name: Upload Installer
+        id: upload-release-asset-linux-rpm
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ env.UPLOAD_URL }}
+          asset_path: ./dist/${{ env.LINUX_RPM_PACKAGE }}
+          asset_name: ${{ env.LINUX_RPM_PACKAGE }}
           asset_content_type: application/octet-stream
 
   publish:
@@ -59,7 +97,7 @@ jobs:
         python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     permissions: write-all
-    needs: build_windows
+    needs: [ build_windows, build_linux_rpm ]
     steps:
       - name: Publish Release
         run: |
