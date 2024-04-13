@@ -12,9 +12,9 @@ class TestDownloadThread(unittest.TestCase):
     """Unit test cases for DownloadThread class."""
 
     def setUp(self):
+        self.root = tk.Tk()
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'
-        self.root = tk.Tk()
         self.source = M3U8DownloaderUI(self.root)
         self.config_file = 'config.json'
 
@@ -26,6 +26,7 @@ class TestDownloadThread(unittest.TestCase):
 
     @pytest.mark.sequential_order
     def test__load_config_no_file(self):
+        """Test if load config works as expected when configuration file do not exist"""
         thread = DownloadThread(self.input_url, self.output_file, self.source)
         thread._load_config()
         self.assertFalse(os.path.exists(self.config_file))
@@ -34,6 +35,7 @@ class TestDownloadThread(unittest.TestCase):
 
     @pytest.mark.sequential_order
     def test__load_config_skip_space_check(self):
+        """Test if load config works as expected when skip space check is provided"""
         config = {
             'skip_space_check': True
         }
@@ -51,6 +53,7 @@ class TestDownloadThread(unittest.TestCase):
 
     @pytest.mark.sequential_order
     def test__load_config_debug(self):
+        """Test if load config works as expected when debug is provided"""
         config = {
             'debug': True
         }
@@ -68,6 +71,7 @@ class TestDownloadThread(unittest.TestCase):
 
     @pytest.mark.sequential_order
     def test__load_config_invalid(self):
+        """Test if load config raises json.JSONDecodeError"""
         config = ['Test']
         try:
             with open(self.config_file, 'w') as file:

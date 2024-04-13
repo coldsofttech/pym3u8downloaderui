@@ -22,6 +22,7 @@ class TestAboutUI(unittest.TestCase):
     @pytest.mark.sequential_order
     @patch('webbrowser.open')
     def test__open_license_link(self, mock_open):
+        """Test if open license link works as expected"""
         about_ui = AboutUI(self.root)
         try:
             self.assertTrue(about_ui.license_link.endswith('LICENSE'))

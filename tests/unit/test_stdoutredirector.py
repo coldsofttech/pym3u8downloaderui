@@ -22,12 +22,14 @@ class TestStdoutRedirector(unittest.TestCase):
 
     @pytest.mark.sequential_order
     def test_write(self):
+        """Test if write works as expected for single message"""
         message = 'Hello World!'
         self.stdout_redirector.write(message)
         self.assertEqual(self.text_variable.get(), message)
 
     @pytest.mark.sequential_order
     def test_write_multiple(self):
+        """Test if write works as expected for multiple messages"""
         messages = ['Message 1', 'Message 2', 'Message 3']
         expected_output = 'Message 3'
         for message in messages:
