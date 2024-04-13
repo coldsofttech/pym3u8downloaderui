@@ -131,17 +131,32 @@ class M3U8DownloaderUI:
         """Set icon for the application window."""
         import requests
 
-        if os.path.exists(Constants.APP_ICON_FILE_NAME):
-            self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
-        else:
-            try:
-                response = requests.get(Constants.APP_ICON_FILE_PATH)
-                if response.status_code == 200:
-                    with open(Constants.APP_ICON_FILE_NAME, 'wb') as icon_file:
-                        icon_file.write(response.content)
-                    self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
-            except requests.RequestException:
-                pass
+        if platform.system().lower() == 'windows':
+            if os.path.exists(Constants.APP_ICON_FILE_NAME):
+                self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
+            else:
+                try:
+                    response = requests.get(Constants.APP_ICON_FILE_NAME)
+                    if response.status_code == 200:
+                        with open(Constants.APP_ICON_FILE_NAME, 'wb') as icon_file:
+                            icon_file.write(response.content)
+                        self.master.iconbitmap(default=Constants.APP_ICON_FILE_NAME)
+                except requests.RequestException:
+                    pass
+        elif platform.system().lower() == 'linux':
+            if os.path.exists(Constants.APP_ICON_IMAGE_FILE_NAME):
+                icon = tk.PhotoImage(file=Constants.APP_ICON_IMAGE_FILE_NAME)
+                self.master.iconphoto(True, icon)
+            else:
+                try:
+                    response = requests.get(Constants.APP_ICON_IMAGE_FILE_NAME)
+                    if response.status_code == 200:
+                        with open(Constants.APP_ICON_IMAGE_FILE_NAME, 'wb') as icon_file:
+                            icon_file.write(response.content)
+                        icon = tk.PhotoImage(file=Constants.APP_ICON_IMAGE_FILE_NAME)
+                        self.master.iconphoto(True, icon)
+                except requests.RequestException:
+                    pass
 
     def _set_overrides(self) -> None:
         """Set overrides for the application window."""
