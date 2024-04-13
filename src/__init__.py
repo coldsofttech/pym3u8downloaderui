@@ -460,9 +460,10 @@ class AboutUI:
 
 
 def get_root_window() -> tk.Tk:
-    if platform.system().lower() == 'linux':
-        setting = os.environ.__getitem__('DISPLAY')
-        return tk.Tk(screenName=setting)
+    # if platform.system().lower() == 'linux':
+    #     setting = os.environ.__getitem__('DISPLAY')
+    #     return tk.Tk(screenName=setting)
+    return tk.Tk()
 
 
 def display_settings():
