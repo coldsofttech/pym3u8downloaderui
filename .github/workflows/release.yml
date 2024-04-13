@@ -188,12 +188,8 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          artifacts=$(curl -s -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/artifacts" \
-            jq -r '.artifacts[] | select(.name | test("^m3u8downloader-*.$")) | .archive_download_url')
-          
-          for artifact in $artifacts; do
-            curl -sLJO -H "Authorization: Bearer $GITHUB_TOKEN" "$artifact"
+          assets=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets" | jq -r '.[] | select(.name | test("^m3u8downloader-.*$")) | .browser_download_url')
+          for asset in $assets; do
+            curl -sLJO -H "Authorization: Bearer $GITHUB_TOKEN" "$asset"
           done
-          
           ls -1 m3u8downloader-*
