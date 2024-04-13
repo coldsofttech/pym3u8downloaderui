@@ -11,8 +11,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  release_windows:
-    name: Release Windows
+  release:
+    name: Release
     timeout-minutes: 20
     strategy:
       fail-fast: true
@@ -57,13 +57,20 @@ jobs:
           echo "PACKAGE_PATH=dist$path_separator$latestFile" >> $GITHUB_ENV
           echo "PACKAGE_NAME=$latestFile" >> $GITHUB_ENV
 
-      - name: Upload Package
+      - name: Upload Artifact
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.UPLOAD_URL }}
           asset_path: ${{ env.PACKAGE_PATH }}
           asset_name: ${{ env.PACKAGE_NAME }}
           asset_content_type: application/octet-stream
+
+      - name: Upload to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          twine upload --repository pypi ${{ env.PACKAGE_NAME }}
 
   publish:
     name: Publish
@@ -75,7 +82,7 @@ jobs:
         python-version: [ '3.10' ]
     runs-on: ${{ matrix.os }}
     permissions: write-all
-    needs: [ release_windows ]
+    needs: [ release ]
     steps:
       - name: Publish Release
         run: |

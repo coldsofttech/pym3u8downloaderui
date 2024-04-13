@@ -9,10 +9,10 @@ This application streamlines the task of downloading and merging video files fro
 
 The M3U8 Downloader UI is compatible with the following operating systems:
 
-- **Windows**: Executable files (.exe) are provided for seamless integration and usage on Windows platforms.
-- **RHEL (Red Hat Enterprise Linux) and SUSE**: RPM packages (.rpm) are available for convenient installation on these
-  distributions.
-- **Ubuntu**: Debian packages (.deb) are provided for easy installation and integration with Ubuntu systems.
+- Windows
+- RHEL (Red Hat Enterprise Linux)
+- SLES (SUSE Enterprise Linux Server)
+- Ubuntu
 
 Please note that at this time, the application exclusively supports the aforementioned operating systems.
 
