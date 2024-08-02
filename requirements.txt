@@ -1,4 +1,4 @@
 pym3u8downloader
 pytest~=7.4.0
 setuptools~=72.1.0
-requests~=2.31.0
+requests>=2.32.0
