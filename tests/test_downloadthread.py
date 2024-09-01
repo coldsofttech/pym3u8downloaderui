@@ -15,6 +15,8 @@ class TestDownloadThread(unittest.TestCase):
         self.root = tk.Tk()
         self.input_url = 'https://raw.githubusercontent.com/coldsofttech/pym3u8downloader/main/tests/files/index.m3u8'
         self.output_file = 'video.mp4'
+        self.verify_ssl = True
+        self.is_master = False
         self.source = M3U8DownloaderUI(self.root)
         self.config_file = 'config.json'
 
@@ -27,7 +29,7 @@ class TestDownloadThread(unittest.TestCase):
     @pytest.mark.sequential_order
     def test__load_config_no_file(self):
         """Test if load config works as expected when configuration file do not exist"""
-        thread = DownloadThread(self.input_url, self.output_file, self.source)
+        thread = DownloadThread(self.input_url, self.output_file, self.verify_ssl, self.is_master, self.source)
         thread._load_config()
         self.assertFalse(os.path.exists(self.config_file))
         self.assertFalse(thread.skip_space_check)
@@ -43,7 +45,7 @@ class TestDownloadThread(unittest.TestCase):
             with open(self.config_file, 'w') as file:
                 file.write(json.dumps(config))
 
-            thread = DownloadThread(self.input_url, self.output_file, self.source)
+            thread = DownloadThread(self.input_url, self.output_file, self.verify_ssl, self.is_master, self.source)
             thread._load_config()
             self.assertTrue(os.path.exists(self.config_file))
             self.assertTrue(thread.skip_space_check)
@@ -61,7 +63,7 @@ class TestDownloadThread(unittest.TestCase):
             with open(self.config_file, 'w') as file:
                 file.write(json.dumps(config))
 
-            thread = DownloadThread(self.input_url, self.output_file, self.source)
+            thread = DownloadThread(self.input_url, self.output_file, self.verify_ssl, self.is_master, self.source)
             thread._load_config()
             self.assertTrue(os.path.exists(self.config_file))
             self.assertFalse(thread.skip_space_check)
@@ -77,7 +79,7 @@ class TestDownloadThread(unittest.TestCase):
             with open(self.config_file, 'w') as file:
                 file.write(str(config))
 
-            thread = DownloadThread(self.input_url, self.output_file, self.source)
+            thread = DownloadThread(self.input_url, self.output_file, self.verify_ssl, self.is_master, self.source)
             with self.assertRaises(json.JSONDecodeError):
                 thread._load_config()
         finally:
