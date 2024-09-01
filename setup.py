@@ -16,8 +16,8 @@ setup(
         ]
     },
     install_requires=[
-        'requests',
-        'pym3u8downloader'
+        'requests~=2.32.3',
+        'pym3u8downloader~=0.1.8'
     ],
     requires_python=">=3.10",
     long_description=open('README.md').read(),

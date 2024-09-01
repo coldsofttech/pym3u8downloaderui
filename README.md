@@ -46,21 +46,33 @@ executable.
 ![img.png](doc_images/doc_image_executable.png)
 
 **Step 2:** Enter the URL of the .m3u8 playlist file you wish to download into the **Input URL (.m3u8)** field.
+
 **Step 3:** Specify the destination folder for the downloaded file by clicking the **...** button.
+
+**Step 4:** Check `Skip SSL Verification` if you want to ignore any SSL warnings for https-based input URLs.
 
 ![img.png](doc_images/doc_image_app_window.png)
 
-**Step 4:** Once both the input URL and output file are specified, click the **Download** button.
-**Step 5:** Track the download progress within the application.
+**Step 5:** Once both the input URL and output file are specified, click the **Download** button.
+
+**Step 6:** Track the download progress within the application.
 
 ![img.png](doc_images/doc_image_download_progress.png)
 
-**Step 6:** Upon successful completion of the download, a confirmation message will be displayed.
+**Step 7:** Upon successful completion of the download, a confirmation message will be displayed.
 
 ![img.png](doc_images/doc_image_download_complete.png)
 
 **Step 8:** To initiate a new download and reset the controls, go to **File > New**. This action resets the controls and
 allows you to input a new URL and select a new output file.
+
+**Step 9:** In case if the provided input file is identified as master playlist, you will be notified as below.
+
+![img.png](doc_images/doc_image_master_playlist_identified.png)
+
+**Step 10:** From the available variants, select the appropriate one and click on **Download** button again.
+
+![img.png](doc_images/doc_image_master_playlist_variants.png)
 
 ## General Issues & Resolutions
 
